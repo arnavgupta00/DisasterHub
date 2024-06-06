@@ -4,7 +4,6 @@ import Particles from "./components/particles";
 
 const navigation = [
   { name: "Get Started", href: "/map" },
-  { name: "Contact", href: "/contact" },
 ];
 
 export default function Home() {
