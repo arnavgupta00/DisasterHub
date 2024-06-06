@@ -24,7 +24,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           1
         </button>
@@ -35,7 +35,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           2
         </button>
@@ -46,7 +46,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           3
         </button>
@@ -57,7 +57,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           4
         </button>
@@ -68,7 +68,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           5
         </button>
@@ -79,7 +79,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           6
         </button>
@@ -90,7 +90,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           7
         </button>
@@ -101,7 +101,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           8
         </button>
@@ -112,7 +112,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           9
         </button>
@@ -123,7 +123,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           10
         </button>
@@ -134,7 +134,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           11
         </button>
@@ -145,7 +145,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           12
         </button>
@@ -156,7 +156,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           13
         </button>
@@ -167,7 +167,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           14
         </button>
@@ -178,7 +178,7 @@ export default function Page() {
             router.push("/room");
             
           }}
-          className="rounded-full w-20 h-20 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
+          className="rounded-full w-1/12 h-1/12 bg-white opacity-75 text-gray-950 font-semibold	 text-lg"
         >
           15
         </button>

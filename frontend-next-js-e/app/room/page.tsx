@@ -555,10 +555,9 @@ const Room: React.FC = () => {
                     >
                       <ReactPlayer
                         className="w-full h-ful"
-                        
                         style={{
-                          maxWidth: `${widthT }%`,
-                          maxHeight: `${widthT }%`,
+                          maxWidth: `${widthT}%`,
+                          maxHeight: `${widthT}%`,
                         }}
                         key={user.clientID ?? "0"}
                         playing
@@ -665,9 +664,9 @@ const Room: React.FC = () => {
           style={{ backgroundColor: "#333333" }}
         >
           <Particles
-          className="absolute inset-0 -z-10 animate-fade-in"
-          quantity={100}
-        />
+            className="absolute inset-0 -z-10 animate-fade-in"
+            quantity={100}
+          />
           <div className="h-3/12">
             {localaStreamState && (
               <div className="video-box p-0">
@@ -701,14 +700,19 @@ const Room: React.FC = () => {
                 Attendants
               </div>
             </div>
-            <div className="h-5/6 flex flex-col gap-4">
+            <div
+              className="h-5/6 flex flex-col gap-4"
+              style={{ minHeight: "80%" }}
+            >
               {rightCont == "chats" && (
                 <div
                   className="min-h-3/3"
                   style={{
                     overflowY: "scroll",
-                   
+                    minHeight: "80%",
                     overflowX: "hidden",
+                    scrollbarWidth: "thin",
+                    scrollbarColor: "#888888 #333333",
                   }}
                 >
                   {messageList &&
@@ -728,7 +732,10 @@ const Room: React.FC = () => {
                 </div>
               )}
               {rightCont == "chats" && (
-                <div className="mt-8 flex flex-row justify-center items-center p-2" style={{ maxHeight: "10vh" }}>
+                <div
+                  className="mt-8 flex flex-row justify-center items-center p-2"
+                  style={{ maxHeight: "10vh" }}
+                >
                   <div className="">
                     <input
                       type="text"
