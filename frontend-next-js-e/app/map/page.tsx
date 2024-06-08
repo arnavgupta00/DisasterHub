@@ -1,22 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import Particles from "../components/particles";
 import { setMediaConstraintsG, setRoomNoVar } from "../webRTC/globals";
 import { handleOnCreate, handleOnJoin, userAction } from "../webRTC/action";
 import { useRouter } from "next/navigation";
-
+import Map from "@/app/components/map";
+import { setSocket, socket } from "../webRTC/socket";
 export default function Page() {
-    const router = useRouter();
+  const router = useRouter();
+
+  useEffect(() => {}, []);
+
   return (
     <div className="flex flex-col items-center justify-center w-screen h-screen overflow-hidden bg-gradient-to-tl from-black via-zinc-600/20 to-black">
       <Particles
         className="absolute inset-0 -z-10 animate-fade-in"
         quantity={100}
       />
+        <Map initialCenter={[-96, 37.8]} initialZoom={3} />
 
-      <div className="w-1/3 h-1/3 flex flex-row flex-wrap bg-transparent justify-center items-center gap-12">
+      {/* <div className="w-1/3 h-1/3 flex flex-row flex-wrap bg-transparent justify-center items-center gap-12">
         <button
           onClick={() => {
             setRoomNoVar("Room1");
@@ -182,7 +187,7 @@ export default function Page() {
         >
           15
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }

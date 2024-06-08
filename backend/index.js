@@ -1,7 +1,7 @@
 const express = require("express");
 const http = require("http");
 const WebSocket = require("ws");
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 10000;
 
 const app = express();
 const server = http.createServer(app);
@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
 const rooms = {};
 const rooomClients = {};
 const roomList = [
-  "roomRoom1",
+   "roomRoom1",
   "roomRoom2",
   "roomRoom3",
   "roomRoom4",
@@ -67,13 +67,16 @@ wss.on("connection", (ws) => {
         handleDraw(ws, data);
         break;
       case "storeCanvas":
-        handleStoreCanvas(ws, data);
+        handleStoreCanvas(ws , data);
         break;
       case "clearBoard":
         handleClearBoard(ws.roomId);
         break;
       case "disconnectUser":
         handleDisconnectUser(ws, data);
+      case "location":
+        handleMarker(ws, data);
+        break;
       default:
         console.log(message);
     }
@@ -82,6 +85,40 @@ wss.on("connection", (ws) => {
     handleDisconnect(ws);
   });
 });
+var ListMarkers = [];
+
+const handleMarker = (ws, data) => {
+  const clientsArray = Array.from(wss.clients);
+
+  const { latitude, longitude } = data.data;
+
+  const tolerance = 0.001;
+
+  const markerExists = ListMarkers.some((marker) => {
+    const latDiff = Math.abs(marker.data.latitude - latitude);
+    const lonDiff = Math.abs(marker.data.longitude - longitude);
+    return latDiff <= tolerance && lonDiff <= tolerance;
+  });
+
+  if (!markerExists) {
+    ListMarkers.push(data);
+  }
+
+  console.log(ListMarkers);
+
+  clientsArray.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN && client !== ws) {
+      client.send(
+        JSON.stringify({
+          type: "location",
+          payload: ListMarkers,
+        })
+      );
+    }
+  });
+};
+
+
 
 const handleDisconnectUser = (ws, data) => {
   const clientsArray = Array.from(wss.clients);
@@ -99,7 +136,8 @@ const handleDisconnectUser = (ws, data) => {
   if (index > -1) {
     rooms[roomId].splice(index, 1);
   }
-};
+
+}
 
 const generateClientId = () => {
   return Math.random().toString(36).substring(7);
@@ -107,7 +145,7 @@ const generateClientId = () => {
 
 const handleJoinRoom = (ws, data) => {
   const { roomId, userId, userName } = data;
-  console.log(roomId);//
+
   if (roomList.includes(roomId)) {
     if (!rooms[roomId]) {
       rooms[roomId] = [];
@@ -131,18 +169,27 @@ const handleJoinRoom = (ws, data) => {
 
     const clientsArray = Array.from(wss.clients);
 
-    rooms[roomId].forEach((user) => {
-      rooomClients[roomId].push(user.id);
-      const client = clientsArray.find((client) => client.id === user.id);
-      if (client && client.readyState === WebSocket.OPEN) {
-        client.send(
-          JSON.stringify({
-            type: "userJoined",
-            payload: { userId, socketId: clientId, allUsers: rooms[roomId] },
-          })
-        );
-      }
-    });
+    {
+      rooms[roomId].length > 0 &&
+        rooms[roomId].forEach((user) => {
+          rooomClients[roomId].push(user.id);
+          const client = clientsArray.find((client) => client.id === user.id);
+          if (client && client.readyState === WebSocket.OPEN) {
+            client.send(
+              JSON.stringify({
+                type: "userJoined",
+                payload: {
+                  userId,
+                  socketId: clientId,
+                  allUsers: rooms[roomId],
+                },
+              })
+            );
+          }
+        });
+    }
+
+    
   }
 };
 
@@ -150,6 +197,8 @@ const handleClientList = (ws) => {
   const roomId = ws.roomId;
   const clientsArray = Array.from(wss.clients);
 
+  if(rooms[roomId] && rooms[roomId].length > 0 ){
+  
   rooms[roomId].forEach((user) => {
     rooomClients[roomId].push(user.id);
   });
@@ -170,6 +219,7 @@ const handleClientList = (ws) => {
       );
     }
   });
+  }
 };
 
 const handleCreateRoom = (ws, data) => {
@@ -268,6 +318,7 @@ const handleChat = (ws, data) => {
 };
 
 const handleDisconnect = (ws) => {
+  
   const roomId = ws.roomId;
   if (rooms[roomId]) {
     const index = rooms[roomId].findIndex((user) => user.id === ws.id);
@@ -293,14 +344,13 @@ const handleDisconnect = (ws) => {
       });
     }
   }
+
 };
 
 const sendCanvasData = (ws) => {
   const roomId = ws.roomId;
   if (rooms[roomId] && rooms[roomId].canvasData) {
-    ws.send(
-      JSON.stringify({ type: "getCanvas", canvas: rooms[roomId].canvasData })
-    );
+    ws.send(JSON.stringify({ type: 'getCanvas', canvas: rooms[roomId].canvasData }));
   }
 };
 
@@ -323,29 +373,25 @@ const handleStoreCanvas = (ws, data) => {
     rooms[roomId].canvasData = data.canvasData;
   }
 };
-const getStoreCanvas = (data) => {
+const getStoreCanvas =(data)=>{
   const roomId = data.roomId;
   rooms[roomId].forEach((user) => {
     const client = clientsArray.find((client) => client.id === user.id);
     if (client.readyState === WebSocket.OPEN) {
-      client.send(
-        JSON.stringify({
-          type: "onStoreCanvas",
-          canvas: rooms[roomId].canvasData,
-        })
-      );
+      client.send(JSON.stringify({ type: 'onStoreCanvas' , canvas:rooms[roomId].canvasData }));
     }
   });
-};
+
+}
 
 const handleClearBoard = (roomId) => {
   if (rooms[roomId]) {
-    rooms[roomId].canvasData = null;
+    rooms[roomId].canvasData = null; 
     const clientsArray = Array.from(wss.clients);
     rooms[roomId].forEach((user) => {
       const client = clientsArray.find((client) => client.id === user.id);
       if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ type: "clearBoard" }));
+        client.send(JSON.stringify({ type: 'clearBoard' }));
       }
     });
   }
