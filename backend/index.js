@@ -31,8 +31,16 @@ const roomList = [
   "roomRoom14",
   "roomRoom15",
 ];
-
+var ListMarkers = [];
 wss.on("connection", (ws) => {
+
+  ws.send(
+    JSON.stringify({
+      type: "location",
+      payload: ListMarkers,
+    })
+  );
+
   ws.on("message", (message) => {
     const data = JSON.parse(message);
     switch (data.type) {
@@ -85,7 +93,7 @@ wss.on("connection", (ws) => {
     handleDisconnect(ws);
   });
 });
-var ListMarkers = [];
+
 
 const handleMarker = (ws, data) => {
   const clientsArray = Array.from(wss.clients);

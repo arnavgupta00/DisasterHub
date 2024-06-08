@@ -4,8 +4,8 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import { useRouter } from "next/navigation";
 import { handleOnCreate, handleOnJoin, userAction } from "../webRTC/action";
 import { setMediaConstraintsG, setRoomNoVar } from "../webRTC/globals";
-
 import { setSocket, socket } from "../webRTC/socket";
+
 interface MapProps {
   initialCenter: [number, number];
   initialZoom: number;
@@ -17,13 +17,18 @@ export default function Map({ initialCenter, initialZoom }: MapProps) {
   const router = useRouter();
 
   const handleSendLocation = ({ latitude, longitude }: any) => {
-    socket.send(
-      JSON.stringify({
-        type: "location",
-        data: { latitude, longitude },
-      })
-    );
+    if (socket?.readyState === WebSocket.OPEN) {
+      socket.send(
+        JSON.stringify({
+          type: "location",
+          data: { latitude, longitude },
+        })
+      );
+    } else {
+      console.error("WebSocket is not open. readyState:", socket?.readyState);
+    }
   };
+
   const waitSocketConnection = () => {
     return new Promise<void>((resolve, reject) => {
       const maxNumberOfAttempts = 10;
@@ -36,23 +41,18 @@ export default function Map({ initialCenter, initialZoom }: MapProps) {
         if (currentAttempt > maxNumberOfAttempts - 1) {
           clearInterval(interval);
           reject();
-
           window.location.replace("/");
         } else if (socket?.readyState === WebSocket.OPEN) {
           clearInterval(interval);
-          if (!map) initializeMap();
-
           resolve();
         }
         currentAttempt++;
       }, intervalTime);
     });
   };
+
   const initializeMap = () => {
     mapboxgl.accessToken =
-      "pk.eyJ1IjoiYXJuYXZndXB0YTMwMzUiLCJhIjoiY2x4NmlwZzdnMDhsZTJrc2c0YXplM3UyYyJ9.5CqvL3pP9iuudQ1F4L9alA";
-
-    const accessToken =
       "pk.eyJ1IjoiYXJuYXZndXB0YTMwMzUiLCJhIjoiY2x4NmlwZzdnMDhsZTJrc2c0YXplM3UyYyJ9.5CqvL3pP9iuudQ1F4L9alA";
 
     const map = new mapboxgl.Map({
@@ -60,7 +60,6 @@ export default function Map({ initialCenter, initialZoom }: MapProps) {
       style: "mapbox://styles/mapbox/streets-v11",
       center: initialCenter,
       zoom: initialZoom,
-      accessToken: accessToken,
     });
 
     map.addControl(new mapboxgl.NavigationControl(), "top-left");
@@ -78,26 +77,21 @@ export default function Map({ initialCenter, initialZoom }: MapProps) {
             .setLngLat([longitude, latitude])
             .addTo(map);
 
-          // Create a popup for the marker
           const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(
             "<div>You</div>"
           );
 
           marker.setPopup(popup);
 
-          // Show the popup on hover
           marker.getElement().addEventListener("mouseenter", () => {
             marker.togglePopup();
           });
 
-          // Hide the popup on mouse leave
           marker.getElement().addEventListener("mouseleave", () => {
             marker.togglePopup();
           });
 
-          // Add an event listener for when the marker is clicked
           marker.getElement().addEventListener("click", () => {
-            // Console log the latitude and longitude
             console.log("Latitude:", latitude);
             console.log("Longitude:", longitude);
 
@@ -105,41 +99,38 @@ export default function Map({ initialCenter, initialZoom }: MapProps) {
             setRoomNoVar((latitude.toFixed(3) + longitude.toFixed(3)).toString());
             router.push("/room");
           });
+
           socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.type === "location") {
+                
               const listForLocations = data.payload;
               listForLocations.forEach((location: any) => {
                 const { latitude, longitude } = location.data;
-                console.log("latitude", latitude);
+                console.log("Location:", location);
                 const otherMarker = new mapboxgl.Marker()
                   .setLngLat([longitude, latitude])
                   .addTo(map!);
 
-                // Create a popup for the other marker
                 const otherPopup = new mapboxgl.Popup({ offset: 25 }).setHTML(
                   "<div>Someone else's location</div>"
                 );
 
                 otherMarker.setPopup(otherPopup);
 
-                // Show the popup on hover
                 otherMarker.getElement().addEventListener("mouseenter", () => {
                   otherMarker.togglePopup();
                 });
 
-                // Hide the popup on mouse leave
                 otherMarker.getElement().addEventListener("mouseleave", () => {
                   otherMarker.togglePopup();
                 });
 
-                // Add an event listener for when the other marker is clicked
                 otherMarker.getElement().addEventListener("click", () => {
                   handleOnJoin();
                   setRoomNoVar((latitude.toFixed(3) + longitude.toFixed(3)).toString());
                   router.push("/room");
 
-                  // Console log the latitude and longitude
                   console.log("Latitude:", latitude);
                   console.log("Longitude:", longitude);
                 });
@@ -155,9 +146,14 @@ export default function Map({ initialCenter, initialZoom }: MapProps) {
 
     setMap(map);
   };
+
   useEffect(() => {
-    waitSocketConnection();
-  }, [map, initialCenter, initialZoom, router]);
+    waitSocketConnection().then(() => {
+      initializeMap();
+    }).catch(() => {
+      console.error("WebSocket connection failed.");
+    });
+  }, [initialCenter, initialZoom, router]);
 
   return (
     <div className="w-full h-full p-4 flex justify-center items-center">

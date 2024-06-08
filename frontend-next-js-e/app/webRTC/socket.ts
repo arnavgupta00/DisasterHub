@@ -15,6 +15,7 @@ export const setSocket = () => {
   socket = new WebSocket("wss://disasterhub-q09r.onrender.com") ; //URL OF WEBSOCKET SERVER
   socket.onopen = () => {
     socketReadyState = true;
+    console.log("WebSocket is open now.");
   };
 
   socket.onmessage = (event) => {
