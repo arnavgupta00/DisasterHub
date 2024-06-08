@@ -12,7 +12,7 @@ export const removeSocket = () => {
 
 export const setSocket = () => {
   
-  socket = new WebSocket("ws://localhost:10000") ; //URL OF WEBSOCKET SERVER
+  socket = new WebSocket("wss://disasterhub-q09r.onrender.com") ; //URL OF WEBSOCKET SERVER
   socket.onopen = () => {
     socketReadyState = true;
   };
