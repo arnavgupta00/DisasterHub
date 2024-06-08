@@ -115,7 +115,7 @@ const handleMarker = (ws, data) => {
   console.log(ListMarkers);
 
   clientsArray.forEach((client) => {
-    if (client.readyState === WebSocket.OPEN && client !== ws) {
+    if (client.readyState === WebSocket.OPEN ) {
       client.send(
         JSON.stringify({
           type: "location",
