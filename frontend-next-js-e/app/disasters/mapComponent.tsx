@@ -93,15 +93,17 @@ const MapComponent: React.FC<MapComponentProps> = ({ events }) => {
     });
 
     map.on("click", "event-layer", (e) => {
-      const titleWithOutSpaces = e.features[0].properties.title.replace(
-        /\s/g,
-        ""
-      );
-      console.log(titleWithOutSpaces);
+      if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties.title) {
+        const titleWithOutSpaces = e.features[0].properties.title.replace(
+          /\s/g,
+          ""
+        );
+        console.log(titleWithOutSpaces);
 
-      handleOnCreate();
-      setRoomNoVar(titleWithOutSpaces);
-      router.push("/room");
+        handleOnCreate();
+        setRoomNoVar(titleWithOutSpaces);
+        router.push("/room");
+      }
 
       // if (e.features && e.features[0].geometry.type === "Point") {
       //   const coordinates = e.features[0].geometry.coordinates.slice() as [
