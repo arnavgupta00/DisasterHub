@@ -12,7 +12,7 @@ export const removeSocket = () => {
 
 export const setSocket = () => {
   
-  socket = new WebSocket("wss://disasterhub-q09r.onrender.com") ; //URL OF WEBSOCKET SERVER
+  socket = new WebSocket("https://disasterhub-q09r.onrender.com") ; //URL OF WEBSOCKET SERVER
   socket.onopen = () => {
     socketReadyState = true;
     console.log("WebSocket is open now.");

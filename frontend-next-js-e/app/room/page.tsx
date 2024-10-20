@@ -527,7 +527,7 @@ const Room: React.FC = () => {
             id="vcont"
           >
             {usersInfo.length === 0
-              ? userAction == "joinRoom" && (
+              ? userAction !== "joinRoomasf" && (
                   <button
                     className="w-62 h-4 text-center p-4 pb-8 bg-black text-white rounded "
                     onClick={() => handleStartVideoButton()}

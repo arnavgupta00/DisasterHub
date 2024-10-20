@@ -57,7 +57,7 @@ export default function Map({ initialCenter, initialZoom }: MapProps) {
 
     const map = new mapboxgl.Map({
       container: mapContainerRef.current!,
-      style: "mapbox://styles/mapbox/streets-v11",
+      style: "mapbox://styles/mapbox/dark-v10",
       center: initialCenter,
       zoom: initialZoom,
     });
