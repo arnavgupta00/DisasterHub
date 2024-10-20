@@ -96,14 +96,15 @@ export default function Map({ initialCenter, initialZoom }: MapProps) {
             console.log("Longitude:", longitude);
 
             handleOnCreate();
-            setRoomNoVar((latitude.toFixed(3) + longitude.toFixed(3)).toString());
+            setRoomNoVar(
+              (latitude.toFixed(3) + longitude.toFixed(3)).toString()
+            );
             router.push("/room");
           });
 
           socket.onmessage = (event) => {
             const data = JSON.parse(event.data);
             if (data.type === "location") {
-                
               const listForLocations = data.payload;
               listForLocations.forEach((location: any) => {
                 const { latitude, longitude } = location.data;
@@ -127,8 +128,10 @@ export default function Map({ initialCenter, initialZoom }: MapProps) {
                 });
 
                 otherMarker.getElement().addEventListener("click", () => {
-                  handleOnJoin();
-                  setRoomNoVar((latitude.toFixed(3) + longitude.toFixed(3)).toString());
+                  handleOnCreate();
+                  setRoomNoVar(
+                    (latitude.toFixed(3) + longitude.toFixed(3)).toString()
+                  );
                   router.push("/room");
 
                   console.log("Latitude:", latitude);
@@ -148,11 +151,13 @@ export default function Map({ initialCenter, initialZoom }: MapProps) {
   };
 
   useEffect(() => {
-    waitSocketConnection().then(() => {
-      initializeMap();
-    }).catch(() => {
-      console.error("WebSocket connection failed.");
-    });
+    waitSocketConnection()
+      .then(() => {
+        initializeMap();
+      })
+      .catch(() => {
+        console.error("WebSocket connection failed.");
+      });
   }, [initialCenter, initialZoom, router]);
 
   return (
