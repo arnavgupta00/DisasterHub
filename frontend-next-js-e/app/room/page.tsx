@@ -476,7 +476,7 @@ const Room: React.FC = () => {
   };
 
   return (
-    <div className="w-screen h-screen" style={{ overflow: "hidden" }}>
+    <div className="w-screen h-screen overflow-hidden">
       <Particles
         className="absolute inset-0 -z-10 animate-fade-in"
         quantity={100}
@@ -502,41 +502,31 @@ const Room: React.FC = () => {
           </div>
         </div>
       )}
-      <div className="w-full h-full flex flex-row justify-center items-center">
+      <div className="w-full h-full flex flex-col md:flex-row justify-center items-center">
         <Particles
           className="absolute inset-0 -z-10 animate-fade-in"
           quantity={100}
         />
-        <div className="w-5/6 h-full  ">
+        <div className="w-full md:w-5/6 h-full">
           <Particles
             className="absolute inset-0 -z-10 animate-fade-in"
             quantity={100}
           />
           <div
-            className="h-5/6 bg-transparent p-2"
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              maxWidth: "100%",
-              maxHeight: "90%",
-              gap: "1rem",
-              flexWrap: "wrap",
-            }}
+            className="h-full md:h-5/6 bg-transparent p-2 flex flex-wrap justify-center items-center gap-4"
             id="vcont"
           >
             {usersInfo.length === 0
               ? userAction !== "joinRoomasf" && (
                   <button
-                    className="w-62 h-4 text-center p-4 pb-8 bg-black text-white rounded "
+                    className="w-full md:w-62 h-12 text-center p-4 bg-black text-white rounded"
                     onClick={() => handleStartVideoButton()}
                   >
                     Click To Join
                   </button>
                 )
               : null}
-
+  
             {usersInfo.length > 0 &&
               Array.from(new Set(usersInfo)).map((user) => {
                 const widthT =
@@ -547,33 +537,36 @@ const Room: React.FC = () => {
                 if (user.mediaStream.getVideoTracks().length > 0 || 1 == 1) {
                   return (
                     <div
-                      className="flex flex-col justify-center items-center p-0 "
+                      key={user.clientID ?? "0"}
+                      className="flex flex-col justify-center items-center p-0"
                       style={{
                         maxWidth: `${widthT - 3}%`,
                         maxHeight: `${widthT - 3}%`,
                       }}
                     >
                       <ReactPlayer
-                        className="w-full h-ful"
+                        className="w-full h-full"
                         style={{
                           maxWidth: `${widthT}%`,
                           maxHeight: `${widthT}%`,
                         }}
-                        key={user.clientID ?? "0"}
                         playing
                         url={user.mediaStream}
                         muted={
-                          (user.clientID ?? "0") == "0SCREEN" ? true : false
+                          (user.clientID ?? "0") === "0SCREEN" ? true : false
                         }
                       />
                       <div className="nametag text-white" id="myname">
-                        {(user.clientID ?? "0") == "0SCREEN"
+                        {(user.clientID ?? "0") === "0SCREEN"
                           ? `${username} (Your Screen)`
                           : usersInfo.find((u) => u.clientID === user.clientID)
                               ?.name}
                       </div>
                       {!user.mediaStream.getAudioTracks()[0]?.enabled && (
-                        <div className="mute-icon text-red-500" id="mymuteicon">
+                        <div
+                          className="mute-icon text-red-500"
+                          id="mymuteicon"
+                        >
                           <MicOff />
                         </div>
                       )}
@@ -587,10 +580,10 @@ const Room: React.FC = () => {
                 }
               })}
           </div>
-
-          <div className="h-1/6 p-2">
-            <div className="utils flex flex-row justify-center items-center gap-4">
-              <div className="audio flex flex-row justify-center items-center">
+  
+          <div className="h-full md:h-1/6 p-2">
+            <div className="utils flex flex-wrap justify-center items-center gap-4">
+              <div className="audio flex justify-center items-center">
                 {videoPremission ? (
                   <Video
                     style={{ color: "white" }}
@@ -607,7 +600,7 @@ const Room: React.FC = () => {
                   />
                 )}
               </div>
-              <div className="audio flex flex-row justify-center items-center">
+              <div className="audio flex justify-center items-center">
                 {audioPremission ? (
                   <Mic
                     style={{ color: "white" }}
@@ -624,22 +617,13 @@ const Room: React.FC = () => {
                   />
                 )}
               </div>
-              <div className="audio flex flex-row justify-center items-center">
+              <div className="audio flex justify-center items-center">
                 <ScreenShare
                   style={{ color: "white" }}
                   onClick={() => startScreenStream()}
                 />
               </div>
-              {/* <div className="audio flex flex-row justify-center items-center">
-                <Presentation
-                  style={{ color: "white" }}
-                  onClick={() => {
-                    setShowWhiteBoard(!showWhiteBoard);
-                    connectionInitiator();
-                  }}
-                />
-              </div> */}
-              <div className="cutcall tooltip flex flex-row justify-center items-center">
+              <div className="cutcall tooltip flex justify-center items-center">
                 <PhoneOff
                   style={{ color: "white" }}
                   onClick={() => {
@@ -648,7 +632,7 @@ const Room: React.FC = () => {
                 />
               </div>
             </div>
-            <div className="p-4 bg-transparent opacity-20 w-2/12">
+            <div className="p-4 bg-transparent opacity-20 w-full md:w-2/12">
               <button
                 className="p-4 bg-white text-black rounded-full w-full mt-4"
                 onClick={() => copyToClipboard()}
@@ -658,20 +642,20 @@ const Room: React.FC = () => {
             </div>
           </div>
         </div>
-
+  
         <div
-          className="w-1/6 h-full bg-gray-700 "
+          className="w-full md:w-1/6 h-full bg-gray-700"
           style={{ backgroundColor: "#333333" }}
         >
           <Particles
             className="absolute inset-0 -z-10 animate-fade-in"
             quantity={100}
           />
-          <div className="h-3/12">
+          <div className="h-1/3 md:h-3/12">
             {localaStreamState && (
               <div className="video-box p-0">
                 <ReactPlayer
-                  className="w-full h-ful"
+                  className="w-full h-full"
                   style={{
                     display: "inline",
                   }}
@@ -684,16 +668,16 @@ const Room: React.FC = () => {
             )}
           </div>
           <div className="h-2/3 flex flex-col gap-4 justify-between">
-            <div className=" flex flex-row justify-center gap-4 items-center mt-4 h-1/6">
+            <div className="flex flex-row justify-center gap-4 items-center mt-4 h-1/6">
               <div
-                className="p-2 pl-4 pr-4  bg-black text-white"
+                className="p-2 pl-4 pr-4 bg-black text-white cursor-pointer"
                 onClick={() => setRightCont("chats")}
               >
                 <i className="" />
                 Chats
               </div>
               <div
-                className="p-2 pl-4 pr-4  bg-black text-white"
+                className="p-2 pl-4 pr-4 bg-black text-white cursor-pointer"
                 onClick={() => setRightCont("attendies")}
               >
                 <i className="fas fa-users mr-1" />
@@ -701,14 +685,13 @@ const Room: React.FC = () => {
               </div>
             </div>
             <div
-              className="h-5/6 flex flex-col gap-4"
+              className="h-full md:h-5/6 flex flex-col gap-4"
               style={{ minHeight: "80%" }}
             >
-              {rightCont == "chats" && (
+              {rightCont === "chats" && (
                 <div
-                  className="min-h-3/3"
+                  className="min-h-3/3 overflow-y-scroll"
                   style={{
-                    overflowY: "scroll",
                     minHeight: "80%",
                     overflowX: "hidden",
                     scrollbarWidth: "thin",
@@ -716,12 +699,19 @@ const Room: React.FC = () => {
                   }}
                 >
                   {messageList &&
-                    messageList.map((message) => {
+                    messageList.map((message, index) => {
                       return (
-                        <div className="flex flex-col justify-center items-start p-2">
-                          <div className="flex flex-row justify-between items-start">
-                            <div className="text-s">{message.userName}</div>
-                            <div className="m-1 text-xs ">{message.date}</div>
+                        <div
+                          key={index}
+                          className="flex flex-col justify-center items-start p-2"
+                        >
+                          <div className="flex flex-row justify-between items-start w-full">
+                            <div className="text-sm font-bold">
+                              {message.userName}
+                            </div>
+                            <div className="m-1 text-xs">
+                              {new Date(message.date).toLocaleTimeString()}
+                            </div>
                           </div>
                           <div className="text-lg text-white">
                             {message.message}
@@ -731,16 +721,18 @@ const Room: React.FC = () => {
                     })}
                 </div>
               )}
-              {rightCont == "chats" && (
-                <div
-                  className="mt-8 flex flex-row justify-center items-center p-2"
+              {rightCont === "chats" && (
+                <form
+                  onSubmit={handleFormSubmit}
+                  className="mt-8 flex flex-col md:flex-row justify-center items-center p-2"
                   style={{ maxHeight: "10vh" }}
                 >
-                  <div className="">
+                  <div className="w-full md:w-auto">
                     <input
                       type="text"
-                      className="text-black  w-full h-10 p-2 pl-4 pr-4 bg-white"
-                      placeholder="Type here.."
+                      className="text-black w-full h-10 p-2 pl-4 pr-4 bg-white"
+                      placeholder="Type here..."
+                      value={message?.message || ""}
                       onChange={(e) =>
                         setMessage({
                           message: e.target.value,
@@ -751,47 +743,44 @@ const Room: React.FC = () => {
                       }
                     />
                   </div>
-                  <div className="">
+                  <div className="w-full md:w-auto mt-2 md:mt-0 md:ml-2">
                     <button
-                      className="text-white bg-black p-2 pl-4 pr-4"
-                      onClick={(e) => handleFormSubmit(e)}
+                      type="submit"
+                      className="text-white bg-black p-2 pl-4 pr-4 w-full md:w-auto"
                     >
                       Send
                     </button>
                   </div>
-                </div>
+                </form>
               )}
-
-              {rightCont == "attendies" && (
+  
+              {rightCont === "attendies" && (
                 <div className="h-2/3 flex flex-col gap-4 p-4">
                   <div className="">
-                    <div className="">
-                      <div className=" text-white">{username} (you)</div>
-                    </div>
+                    <div className="text-white font-bold">{username} (you)</div>
                   </div>
                   {usersInfo &&
-                    Array.from(new Set(usersInfo)).map((user) => {
+                    Array.from(new Set(usersInfo)).map((user, index) => {
                       return (
-                        <div className="">
-                          <div className="">
-                            <div className=" text-white mr-4">{user.name} </div>
-                            {userAction == "createRoom" && (
-                              <PhoneOff
-                                size={16}
-                                onClick={() => {
-                                  disconnectUserFull(user.clientID);
-
-                                  socket.send(
-                                    JSON.stringify({
-                                      type: "disconnectUser",
-                                      target: user.clientID,
-                                    })
-                                  );
-                                }}
-                                color="red"
-                              />
-                            )}
-                          </div>
+                        <div key={index} className="flex items-center">
+                          <div className="text-white mr-4">{user.name}</div>
+                          {userAction === "createRoom" && (
+                            <PhoneOff
+                              size={16}
+                              onClick={() => {
+                                disconnectUserFull(user.clientID);
+  
+                                socket.send(
+                                  JSON.stringify({
+                                    type: "disconnectUser",
+                                    target: user.clientID,
+                                  })
+                                );
+                              }}
+                              color="red"
+                              className="cursor-pointer"
+                            />
+                          )}
                         </div>
                       );
                     })}
@@ -803,6 +792,7 @@ const Room: React.FC = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Room;

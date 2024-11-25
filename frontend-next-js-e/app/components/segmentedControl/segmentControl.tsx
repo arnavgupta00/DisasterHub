@@ -20,11 +20,11 @@ const SegmentedControl: React.FC<SegmentedControlProps> = ({ name, callback, seg
   };
 
   return (
-    <div className="flex rounded-2xl bg-transparent p-1 shadow-sm">
+    <div className="flex flex-wrap rounded-2xl bg-transparent p-1 shadow-sm">
       {segments.map((segment) => (
         <button
           key={segment.value}
-          className={`flex-2 px-4 py-2 mr-2 text-sm font-medium transition-colors duration-200 ${
+          className={`flex-1 px-2 py-1 md:px-4 md:py-2 m-1 text-sm font-medium transition-colors duration-200 ${
             selectedValue === segment.value
               ? 'bg-[#1C1C1E] text-white rounded-xl'
               : 'text-white hover:bg-gray-400 rounded-xl'

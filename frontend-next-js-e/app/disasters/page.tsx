@@ -1,5 +1,4 @@
 "use client";
-"use client";
 import React, { useEffect, useState } from "react";
 import { FetchDisasters } from "../components/fetchDisasters";
 import { Loader2 } from "lucide-react";
@@ -78,18 +77,18 @@ const Home: React.FC = () => {
   }, [events, selectedCategory]);
 
   return (
-    <div className="flex flex-row items-center justify-center w-screen h-screen overflow-hidden bg-gradient-to-tl from-black via-zinc-600/20 to-black">
+    <div className="flex flex-col md:flex-row items-center justify-center w-screen h-screen overflow-hidden bg-gradient-to-tl from-black via-zinc-600/20 to-black">
       <Particles
         className="absolute inset-0 -z-10 animate-fade-in"
         quantity={100}
       />
 
-      <div className="w-2/3 h-full flex flex-col p-8">
-        <h1 className="text-4xl font-bold text-gray-300 mb-6">
+      <div className="w-full md:w-2/3 h-full flex flex-col p-4 md:p-8">
+        <h1 className="text-2xl md:text-4xl font-bold text-gray-300 mb-4 md:mb-6">
           Disaster Events
         </h1>
         <div className="flex flex-col gap-4 w-full mb-4 h-3/12">
-          <div className="flex flex-row justify-between items-start w-1/2">
+          <div className="flex flex-col md:flex-row justify-between items-start w-full md:w-1/2">
             <SegmentedControl
               name="date-range"
               callback={(val) => {
@@ -105,7 +104,7 @@ const Home: React.FC = () => {
             />
           </div>
           {categories.length > 0 && (
-            <div className="flex flex-row justify-between items-start w-1/2">
+            <div className="flex flex-col md:flex-row justify-between items-start w-full md:w-1/2">
               <SegmentedControl
                 name="category"
                 callback={(val) => {
@@ -119,11 +118,11 @@ const Home: React.FC = () => {
             </div>
           )}
         </div>
-        <div className="flex-grow"  >
+        <div className="flex-grow">
           <MapComponent events={filteredEvents} />
         </div>
       </div>
-      <div className="w-1/3 h-full border-white">
+      <div className="w-full md:w-1/3 h-full border-white">
         <div className="overflow-y-auto h-full p-4 bg-transparent text-white rounded-lg">
           {isLoading ? (
             <div className="flex items-center justify-center h-full">

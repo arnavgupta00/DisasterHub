@@ -12,6 +12,7 @@ interface Event {
   title: string;
   description: string | null;
   geometry: Array<{ coordinates?: [number, number] }>;
+  categories: Array<{ title: string }>;
 }
 
 interface MapComponentProps {
@@ -70,6 +71,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ events }) => {
           properties: {
             title: event.title,
             description: event.description,
+            category: event?.categories[0]?.title || "Unknown",
           },
         }))
       ),
@@ -86,14 +88,31 @@ const MapComponent: React.FC<MapComponentProps> = ({ events }) => {
       source: "events",
       paint: {
         "circle-radius": 6,
-        "circle-color": "#FF4136",
+        "circle-color": [
+          "match",
+          ["get", "category"],
+          "Wildfires",
+          "#FF4136",
+          "Severe Storms",
+          "#4493F8",
+          "Floods",
+          "#0074D9",
+          "Storms",
+          "#2ECC40",
+          /* default */ "#AAAAAA",
+        ],
         "circle-stroke-width": 1,
         "circle-stroke-color": "#FFFFFF",
       },
     });
 
     map.on("click", "event-layer", (e) => {
-      if (e.features && e.features[0] && e.features[0].properties && e.features[0].properties.title) {
+      if (
+        e.features &&
+        e.features[0] &&
+        e.features[0].properties &&
+        e.features[0].properties.title
+      ) {
         const titleWithOutSpaces = e.features[0].properties.title.replace(
           /\s/g,
           ""
@@ -104,30 +123,6 @@ const MapComponent: React.FC<MapComponentProps> = ({ events }) => {
         setRoomNoVar(titleWithOutSpaces);
         router.push("/room");
       }
-
-      // if (e.features && e.features[0].geometry.type === "Point") {
-      //   const coordinates = e.features[0].geometry.coordinates.slice() as [
-      //     number,
-      //     number
-      //   ];
-      //   const { title, description } = e.features[0].properties as {
-      //     title: string;
-      //     description: string | null;
-      //   };
-
-      //   while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      //     coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-      //   }
-
-      //   new mapboxgl.Popup({ closeButton: false, closeOnClick: false })
-      //     .setLngLat(coordinates)
-      //     .setHTML(
-      //       `<h3 class="text-lg font-bold">${title}</h3><p class="text-sm">${
-      //         description || "No description available"
-      //       }</p>`
-      //     )
-      //     .addTo(map);
-      // }
     });
 
     map.on("mouseenter", "event-layer", () => {
@@ -138,7 +133,6 @@ const MapComponent: React.FC<MapComponentProps> = ({ events }) => {
       map.getCanvas().style.cursor = "";
     });
   };
-
   return (
     <div
       className="map-container"

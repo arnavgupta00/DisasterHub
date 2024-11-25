@@ -9,14 +9,15 @@ export const metadata: Metadata = {
     default: "Disaster Hub",
     template: "%s",
   },
-  description: "A WebRTC-based platform for coordinating disaster response efforts",
+  description:
+    "A WebRTC-based platform for coordinating disaster response efforts",
   openGraph: {
     title: "Disaster Hub",
     description:
       "A WebRTC-based platform for coordinating disaster response efforts",
     url: "https://disasterHub.arnavgupta.tech",
     siteName: "chronark.com",
-    
+
     locale: "en-US",
     type: "website",
   },
@@ -59,9 +60,12 @@ export default function RootLayout({
       <head>
         <Analytics />
       </head>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
       <body
-        className={`bg-black ${process.env.NODE_ENV === "development" ? "debug-screens" : undefined
-          }`}
+        className={`bg-black ${
+          process.env.NODE_ENV === "development" ? "debug-screens" : undefined
+        }`}
       >
         {children}
       </body>
